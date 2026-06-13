@@ -2,21 +2,25 @@
 
         Paper: 61 WAM Contact Counterfactuals
 
-        ## Strongest Prior-Work Threats
+        ## Strongest Technical Threats
         - Data-Efficient and Contact-Rich Manipulation Through Diffusion Augmentation and Vision-Language Models (2026)
 - OmniVTA: Visuo-Tactile World Modeling for Contact-Rich Robotic Manipulation (2026)
 - Learning to Feel the Future: DreamTacVLA for Contact-Rich Manipulation (2025)
 - ForceVLA: Enhancing VLA Models with a Force-aware MoE for Contact-rich Manipulation (2025)
 - DexViTac: Collecting Human Visuo-Tactile-Kinematic Demonstrations for Contact-Rich Dexterous Manipulation (2026)
 - Planning-Guided Diffusion Policy Learning for Generalizable Contact-Rich Bimanual Manipulation (2024)
+- Efficient Robot Skill Learning with Imitation from a Single Video for Contact-Rich Fabric Manipulation (2023)
+- Co-Training Multimodal World Models and Diffusion-Guided Policies for Zero-Shot Contact- Rich Manipulation (n.d.)
 
-        ## Response
-        The paper no longer claims that generic world modeling, generic uncertainty, or larger datasets are novel. The defensible contribution is the combination of explicit unrealized physical branches, a tail-risk objective over those branches, diagnostic probing, and failure memory.
+        ## ICLR Main Response
+        A hostile ICLR reviewer would be correct to reject this as a main-conference submission. The v2 paper has reproducible synthetic evidence and careful limitations, but it does not contain the real robot, high-fidelity simulator, learned model, or manual related-work depth needed for the ICLR main track.
 
-        ## What Is Not Claimed
-        - No real-robot state of the art.
-        - No proof that the branch atlas can always discover the true hidden mode.
-        - No claim that advisor-name matches imply relevance.
+        ## Honest Action
+        The paper is marked `KILL_ARCHIVE`. This avoids converting a generated workshop-style idea into an overstated main-conference claim.
 
-        ## Remaining Reviewer Risk
-        A main-conference reviewer can still reject the work for synthetic-only evidence. The correct venue state is `WORKSHOP_ONLY` until hardware or high-fidelity simulation validation is added.
+        ## What Would Be Needed To Revive
+        - Real robot or high-fidelity benchmark experiments.
+        - Implemented model and baselines, not synthetic probability tables.
+        - Manual full-paper related-work audit.
+        - Paper-specific writing and figures.
+        - Evidence that the core mechanism is learned and useful under deployment shift.
