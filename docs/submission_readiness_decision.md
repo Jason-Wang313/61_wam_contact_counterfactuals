@@ -1,11 +1,13 @@
 # Submission Readiness Decision
 
-Decision: KILL_ARCHIVE
+Decision: STRONG_REVISE.
 
 ICLR main-conference readiness: NO.
 
-Reason: The strongest locally available evidence is synthetic and template-generated. The paper lacks real-robot or high-fidelity simulator validation, implemented learned baselines, manual full-paper related-work depth, and paper-specific empirical figures. These are not recoverable without new external experiments or a substantially new research project.
+Submission-hardening version: v4 real MuJoCo rebuild.
 
-Honest terminal action: archive/kill for ICLR main. Do not submit this paper to ICLR main in its current form.
+Reason: the paper now has real high-fidelity MuJoCo evidence, implemented baselines, ablations, stress tests, and uncertainty summaries. However, the proposed adaptive branch MPC does not clearly outperform ensemble mean MPC or robust worst-case MPC, and the combined-shift ablations do not isolate the proposed mechanism strongly enough. Low-friction performance also remains far below the oracle hidden-parameter planner.
 
-Revival condition: rebuild as a real empirical robotics paper with implemented model, strong real baselines, manual related work, and deployment evidence.
+Honest terminal action: do not submit to ICLR main in this form. Keep as a strong-revise empirical scaffold.
+
+Revival condition: add learned branch inference, external robotics benchmarks or hardware, stronger tactile/contact baselines, and statistically significant gains over ensemble and robust MPC.

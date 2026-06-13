@@ -2,18 +2,19 @@
 
 Paper: 61 wam_contact_counterfactuals
 
-Existing v2 decision: KILL_ARCHIVE
+Previous v3 decision: KILL_ARCHIVE.
 
-Gate verdict: KILL_ARCHIVE
+v4 gate verdict: STRONG_REVISE.
 
-Evidence digest: 0d9461a2f8431fe3
+ICLR main ready: no.
 
-Fatal blockers:
-- Synthetic-only evidence.
-- Template-generated experiment and writing.
-- No real robot or high-fidelity benchmark.
-- No trained WAM/model checkpoint.
-- No implemented real baselines.
-- No manual exhaustive related-work synthesis.
+Evidence digest: real MuJoCo contact-pushing benchmark with 5 seeds, 5 stress splits, 6 main methods, paired tasks, ablations, confidence intervals, and figures.
 
-The only honest main-conference-safe decision is to archive rather than overclaim.
+Remaining blockers:
+- Proposed branch MPC does not clearly dominate ensemble mean MPC.
+- Proposed branch MPC does not consistently beat robust worst-case MPC.
+- Low-friction split exposes a large oracle gap.
+- Combined-shift ablations do not isolate branch reweighting as the decisive mechanism.
+- No real robot, external benchmark, learned WAM checkpoint, or manual full-paper related-work synthesis.
+
+The only honest main-conference-safe decision is STRONG_REVISE, not submission ready.
