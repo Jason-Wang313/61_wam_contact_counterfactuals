@@ -4,42 +4,117 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{booktabs}
-\title{WAM Contact Counterfactuals: ICLR Main-Conference Gate Archive}
+\usepackage{graphicx}
+\usepackage{array}
+
+\title{WAM Contact Counterfactuals: Branch-Structured Planning for Contact-Rich MuJoCo Pushing}
 \author{Anonymous Authors}
+
 \begin{document}
 \maketitle
+
 \begin{abstract}
-This document is not an ICLR main-conference submission. It is the v3 main-conference gate for a generated robotics draft about world-action models for contact-rich manipulation. The original research bet was: Treat unobserved contact alternatives as first-class latent futures, not data augmentation. After a stricter hostile review, the honest terminal decision is \textbf{KILL/ARCHIVE}. Submission-hardening version: v3.
+Contact-rich manipulation is difficult because a single executed trajectory hides many physically plausible alternatives: the object may be heavier, slipperier, or closer to a different contact mode than the robot's nominal model assumes. This paper rebuilds a previously synthetic idea into a real MuJoCo evidence package for branch-structured world-action planning. We evaluate adaptive branch MPC on a planar contact-pushing task with hidden mass and friction, paired tasks across methods, five stress splits, five seeds, 80 episodes per split/method, confidence intervals, baselines, and ablations. The result is informative but not submission-ready: branch MPC improves over random and nominal single-branch MPC, but it mostly ties ensemble MPC and does not consistently beat robust worst-case MPC. Low-friction performance remains far below an oracle hidden-parameter planner. The honest terminal decision is \textbf{STRONG\_REVISE}, not ICLR-main readiness. Submission-hardening version: v4.
 \end{abstract}
 
+\section{Motivation}
+World-action models for robot manipulation often learn from what happened after an action. In contact-rich settings, this can collapse the very uncertainty a planner needs: two contact modes may look similar before contact, but require different pushes. The research bet behind WAM Contact Counterfactuals is that unobserved physical alternatives should remain explicit until contact observations update them.
+
+The v3 version of this paper was an archive memo because the evidence was synthetic. The v4 rebuild replaces that scaffold with a MuJoCo benchmark and implemented planners. The rebuild is deliberately gate-oriented: if branch counterfactuals do not beat strong baselines, the paper should not be submitted as an ICLR-main paper.
+
+\section{Benchmark}
+We instantiate a planar MuJoCo contact-pushing task. A spherical pusher moves a cylindrical puck toward a target on a plane. Hidden physical parameters are puck mass and contact friction. The planner observes puck pose, chooses a sequence of push actions, and receives success if the final puck position is within 7.5 cm of the target.
+
+\paragraph{Stress splits.}
+We evaluate five splits: nominal, low friction, high friction, heavy object, and combined shift. Combined shift includes mass/friction shifts, target displacement, observation noise, and actuation noise. Every method is evaluated on the same split/seed/episode tasks.
+
+\paragraph{Methods.}
+The proposed method maintains a branch library over hidden mass/friction pairs, plans under the weighted branch prediction, and updates branch weights after each observed contact. Baselines are random push, nominal single-branch MPC, ensemble mean MPC, robust worst-case MPC, and an oracle hidden-parameter MPC planner. All non-random planners use the same action candidate set and three-push budget.
+
+\paragraph{Rigor.}
+The main run uses 5 seeds, 16 episodes per seed/split/method, for 80 episodes per split/method and 2,400 main rows. Ablations are run on the combined-shift split for 480 additional rows. We report mean success, final distance, normalized progress, and 95 percent confidence intervals.
+
+\section{Main Results}
+Table~\ref{tab:main} reports success rates. Branch MPC is much stronger than random and usually stronger than nominal single-branch MPC. However, it does not clearly beat ensemble mean MPC and it does not consistently beat robust worst-case MPC. The oracle gap is especially large on low friction.
+
+\begin{table}[t]
+\centering
+\caption{Success rate by stress split. Each entry is mean $\pm$ 95 percent CI over 80 episodes.}
+\label{tab:main}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Split & Branch & Ensemble & Robust & Nominal & Oracle \\
+\midrule
+Nominal & $0.688 \pm 0.102$ & $0.688 \pm 0.102$ & $0.588 \pm 0.109$ & $0.588 \pm 0.109$ & $0.850 \pm 0.079$ \\
+Low friction & $0.113 \pm 0.070$ & $0.113 \pm 0.070$ & $0.150 \pm 0.079$ & $0.100 \pm 0.066$ & $0.537 \pm 0.110$ \\
+High friction & $0.850 \pm 0.079$ & $0.850 \pm 0.079$ & $0.887 \pm 0.070$ & $0.613 \pm 0.107$ & $0.875 \pm 0.073$ \\
+Heavy object & $0.588 \pm 0.109$ & $0.588 \pm 0.109$ & $0.512 \pm 0.110$ & $0.562 \pm 0.109$ & $0.812 \pm 0.086$ \\
+Combined shift & $0.312 \pm 0.102$ & $0.388 \pm 0.107$ & $0.325 \pm 0.103$ & $0.237 \pm 0.094$ & $0.300 \pm 0.101$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figures/mujoco_success_by_split.png}
+\caption{Success rates across stress splits. Branch MPC has useful robustness over nominal MPC but does not decisively separate from ensemble or robust MPC.}
+\label{fig:success}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figures/mujoco_final_distance_by_split.png}
+\caption{Final distance to target. Lower is better. The low-friction split exposes a large oracle gap, suggesting that the branch library and posterior update are not yet sufficient.}
+\label{fig:distance}
+\end{figure}
+
+\section{Paired Comparisons}
+The paired analysis is stricter than comparing aggregate means because it evaluates methods on identical hidden-physics tasks. Branch MPC beats random by large margins on every split. Against nominal MPC, the largest gains are high friction (+0.238 success) and nominal (+0.100 success). Against robust MPC, the story is mixed: branch gains on nominal and heavy object, but loses on high friction and low friction. Against ensemble MPC, branch is effectively tied on nominal, low friction, high friction, and heavy object, and loses on combined shift.
+
+This is the key reason the paper cannot be called submission-ready. The benchmark validates that the code is real and the hypothesis is testable, but it does not validate the mechanism as a clear ICLR-main contribution.
+
+\section{Ablations}
+Table~\ref{tab:ablation} reports combined-shift ablations. The ablation is unfavorable to a strong mechanism claim: reduced branch library and no-branch-reweighting variants are competitive with the proposed method on success. This indicates that the current branch posterior update is not yet the decisive component.
+
+\begin{table}[t]
+\centering
+\caption{Combined-shift ablation results. Lower final distance is better.}
+\label{tab:ablation}
+\small
+\begin{tabular}{lccc}
+\toprule
+Method & Success & Final distance & Normalized progress \\
+\midrule
+Branch counterfactual MPC & $0.312 \pm 0.102$ & $0.1006 \pm 0.0108$ & $0.7388 \pm 0.0285$ \\
+Reduced branch library & $0.375 \pm 0.107$ & $0.0996 \pm 0.0117$ & $0.7419 \pm 0.0308$ \\
+No branch reweighting & $0.375 \pm 0.107$ & $0.1014 \pm 0.0129$ & $0.7369 \pm 0.0337$ \\
+No diagnostic push & $0.350 \pm 0.105$ & $0.1036 \pm 0.0118$ & $0.7281 \pm 0.0313$ \\
+Mean-risk variant & $0.312 \pm 0.102$ & $0.1051 \pm 0.0126$ & $0.7262 \pm 0.0336$ \\
+One branch only & $0.225 \pm 0.092$ & $0.1250 \pm 0.0174$ & $0.6788 \pm 0.0413$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/mujoco_ablation_distance.png}
+\caption{Combined-shift ablation final distance. The proposed method is not uniquely best, so the mechanism requires substantial revision.}
+\label{fig:ablation}
+\end{figure}
+
+\section{Prior-Work Pressure}
+The local hostile review set is crowded with contact-rich manipulation, visuo-tactile world models, force-aware VLA systems, diffusion policies, and world-action models \citep{prior1,prior2,prior3,prior4,prior5,prior6}. These works make it unsafe to claim novelty from generic uncertainty, data augmentation, or a planner wrapped around a model. The remaining viable boundary is narrower: branch structure must produce a measurable planning advantage under contact-mode ambiguity. The v4 results do not yet establish that boundary.
+
+\section{Limitations and Required Revision}
+The benchmark is real but custom; it is not a public manipulation benchmark or hardware validation. The branch library is handcrafted, not learned. The posterior update is simple and may under-identify friction in low-friction contact. Baselines are implemented MPC variants but not modern learned diffusion or visuo-tactile policies. Related work is still based mainly on local pool artifacts rather than a manual full-paper synthesis.
+
+To become a plausible ICLR-main submission, the project needs learned branch inference, stronger external baselines, hardware or public benchmark validation, qualitative rollout analysis, and statistically significant gains over ensemble and robust MPC.
+
 \section{Gate Decision}
-The v2 paper was workshop-only. Under the active ICLR-main standard, that is insufficient. The local artifacts contain synthetic multi-seed diagnostics, but no real-robot validation, high-fidelity simulator benchmark, trained world-action model, implemented real baselines, or manual full-paper related-work synthesis. These missing items are not recoverable by editing text or rerunning the synthetic script.
+The terminal decision is \textbf{STRONG\_REVISE}. The v4 rebuild rescues the paper from a synthetic archive by adding real MuJoCo evidence and reproducible experiments. It does not rescue the paper into ICLR-main readiness because the central mechanism is not yet decisively better than strong baselines.
 
-\section{Fatal ICLR-Main Blockers}
-\begin{itemize}
-\item Evidence is synthetic and generated from a shared batch template.
-\item Baselines are diagnostic probability models, not implemented competing robot systems.
-\item Ablations do not correspond to a trained model checkpoint.
-\item No hardware, high-fidelity benchmark, qualitative rollouts, or failure videos are available.
-\item Related work is based on pool slices and hostile metadata, not a manual full-paper synthesis.
-\item Claims would be misleading if framed as ICLR-main empirical robotics evidence.
-\end{itemize}
-
-\section{Hostile Prior-Work Pressure}
-The closest local hostile records include:
-\begin{itemize}
-\item Data-Efficient and Contact-Rich Manipulation Through Diffusion Augmentation and Vision-Language Models (2026)
-\item OmniVTA: Visuo-Tactile World Modeling for Contact-Rich Robotic Manipulation (2026)
-\item Learning to Feel the Future: DreamTacVLA for Contact-Rich Manipulation (2025)
-\item ForceVLA: Enhancing VLA Models with a Force-aware MoE for Contact-rich Manipulation (2025)
-\item DexViTac: Collecting Human Visuo-Tactile-Kinematic Demonstrations for Contact-Rich Dexterous Manipulation (2026)
-\end{itemize}
-These works make generic world models, uncertainty, model-based planning, and robot policy robustness crowded. Without real empirical evidence, the remaining novelty boundary is too weak for ICLR main.
-
-\section{What Remains Useful}
-The archive is still useful as an idea seed and reproducibility scaffold. The synthetic code, stress-test CSVs, reviewer attacks, and novelty-boundary docs can inform a future project. The correct next step is not more paper polishing; it is new evidence: implemented models, real baselines, manual related work, and robot or high-fidelity simulator validation.
-
-\section{Terminal Action}
-Decision: \textbf{KILL/ARCHIVE for ICLR main}. Do not submit this paper to ICLR main in the current form. Revival requires a substantially new empirical project.
+\bibliography{references}
+\bibliographystyle{iclr2026_conference}
 
 \end{document}

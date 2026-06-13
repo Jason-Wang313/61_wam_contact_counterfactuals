@@ -1,26 +1,32 @@
-        # Hostile Reviewer Response
+# Hostile Reviewer Response
 
-        Paper: 61 WAM Contact Counterfactuals
+Paper: 61 WAM Contact Counterfactuals
 
-        ## Strongest Technical Threats
-        - Data-Efficient and Contact-Rich Manipulation Through Diffusion Augmentation and Vision-Language Models (2026)
+## Strongest Technical Threats
+
+- Data-Efficient and Contact-Rich Manipulation Through Diffusion Augmentation and Vision-Language Models (2026)
 - OmniVTA: Visuo-Tactile World Modeling for Contact-Rich Robotic Manipulation (2026)
 - Learning to Feel the Future: DreamTacVLA for Contact-Rich Manipulation (2025)
 - ForceVLA: Enhancing VLA Models with a Force-aware MoE for Contact-rich Manipulation (2025)
 - DexViTac: Collecting Human Visuo-Tactile-Kinematic Demonstrations for Contact-Rich Dexterous Manipulation (2026)
 - Planning-Guided Diffusion Policy Learning for Generalizable Contact-Rich Bimanual Manipulation (2024)
-- Efficient Robot Skill Learning with Imitation from a Single Video for Contact-Rich Fabric Manipulation (2023)
-- Co-Training Multimodal World Models and Diffusion-Guided Policies for Zero-Shot Contact- Rich Manipulation (n.d.)
+- FAWAM: Force-Aware World Action Models for Closed-Loop Contact-Rich Manipulation (2026)
 
-        ## ICLR Main Response
-        A hostile ICLR reviewer would be correct to reject this as a main-conference submission. The v2 paper has reproducible synthetic evidence and careful limitations, but it does not contain the real robot, high-fidelity simulator, learned model, or manual related-work depth needed for the ICLR main track.
+## ICLR Main Response
 
-        ## Honest Action
-        The paper is marked `KILL_ARCHIVE`. This avoids converting a generated workshop-style idea into an overstated main-conference claim.
+A hostile ICLR reviewer would no longer be correct to reject the paper for having only synthetic evidence. The v4 rebuild contains a real MuJoCo contact-pushing benchmark, paired hidden-physics tasks, implemented baselines, stress splits, ablations, and confidence intervals.
 
-        ## What Would Be Needed To Revive
-        - Real robot or high-fidelity benchmark experiments.
-        - Implemented model and baselines, not synthetic probability tables.
-        - Manual full-paper related-work audit.
-        - Paper-specific writing and figures.
-        - Evidence that the core mechanism is learned and useful under deployment shift.
+The reviewer would still be correct to reject the paper as an ICLR-main submission because the central mechanism is not decisively validated. Branch MPC mostly ties ensemble mean MPC, does not consistently beat robust worst-case MPC, and remains far from the oracle hidden-parameter planner in low-friction conditions.
+
+## Honest Action
+
+The paper is marked `STRONG_REVISE`. This keeps the real evidence and code, but prevents overclaiming submission readiness.
+
+## What Would Be Needed To Revive
+
+- Learned branch inference rather than a handcrafted branch library.
+- Real robot or external manipulation benchmark experiments.
+- Stronger tactile/contact baselines.
+- Statistically significant gains over ensemble and robust MPC.
+- Manual full-paper related-work audit.
+- Qualitative rollout and failure analyses.

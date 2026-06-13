@@ -1,16 +1,22 @@
-Submission-hardening experiment for paper 61 wam_contact_counterfactuals
-Seven seeds, 600 episodes per seed, strong baselines, ablations, stress sweep, and negative cases.
-observed_only_behavior_clone hidden_mode_shift mean_success=0.4160 ci95=0.0192 tail=0.5840
-observed_only_behavior_clone combined_stress mean_success=0.3379 ci95=0.0079 tail=0.6621
-data_augmentation_wam hidden_mode_shift mean_success=0.5007 ci95=0.0160 tail=0.4993
-data_augmentation_wam combined_stress mean_success=0.4281 ci95=0.0117 tail=0.5719
-scalar_uncertainty_planner hidden_mode_shift mean_success=0.5524 ci95=0.0174 tail=0.4476
-scalar_uncertainty_planner combined_stress mean_success=0.4898 ci95=0.0175 tail=0.5102
-ensemble_disagreement_planner hidden_mode_shift mean_success=0.6009 ci95=0.0181 tail=0.3991
-ensemble_disagreement_planner combined_stress mean_success=0.5578 ci95=0.0173 tail=0.4422
-conformal_risk_filter hidden_mode_shift mean_success=0.6236 ci95=0.0190 tail=0.3764
-conformal_risk_filter combined_stress mean_success=0.5802 ci95=0.0133 tail=0.4198
-proposed_branch_mechanism hidden_mode_shift mean_success=0.7086 ci95=0.0158 tail=0.2914
-proposed_branch_mechanism combined_stress mean_success=0.6743 ci95=0.0225 tail=0.3257
-oracle_branch_upper_bound hidden_mode_shift mean_success=0.7757 ci95=0.0238 tail=0.2243
-oracle_branch_upper_bound combined_stress mean_success=0.7493 ci95=0.0233 tail=0.2507
+MuJoCo contact-branch benchmark for paper 61
+seeds=5 episodes_per_seed_split_method=16 splits=nominal,low_friction,high_friction,heavy_object,combined_shift
+combined_shift branch_counterfactual_mpc success=0.312+/-0.102 distance=0.101+/-0.011
+combined_shift ensemble_mean_mpc success=0.388+/-0.107 distance=0.098+/-0.011
+combined_shift oracle_hidden_params success=0.300+/-0.101 distance=0.104+/-0.011
+combined_shift robust_worst_case_mpc success=0.325+/-0.103 distance=0.104+/-0.012
+heavy_object branch_counterfactual_mpc success=0.588+/-0.109 distance=0.067+/-0.007
+heavy_object ensemble_mean_mpc success=0.588+/-0.109 distance=0.067+/-0.007
+heavy_object oracle_hidden_params success=0.812+/-0.086 distance=0.048+/-0.006
+heavy_object robust_worst_case_mpc success=0.512+/-0.110 distance=0.074+/-0.006
+high_friction branch_counterfactual_mpc success=0.850+/-0.079 distance=0.050+/-0.007
+high_friction ensemble_mean_mpc success=0.850+/-0.079 distance=0.051+/-0.007
+high_friction oracle_hidden_params success=0.875+/-0.073 distance=0.045+/-0.005
+high_friction robust_worst_case_mpc success=0.887+/-0.070 distance=0.045+/-0.005
+low_friction branch_counterfactual_mpc success=0.113+/-0.070 distance=0.100+/-0.006
+low_friction ensemble_mean_mpc success=0.113+/-0.070 distance=0.100+/-0.006
+low_friction oracle_hidden_params success=0.537+/-0.110 distance=0.070+/-0.008
+low_friction robust_worst_case_mpc success=0.150+/-0.079 distance=0.097+/-0.006
+nominal branch_counterfactual_mpc success=0.688+/-0.102 distance=0.062+/-0.007
+nominal ensemble_mean_mpc success=0.688+/-0.102 distance=0.061+/-0.007
+nominal oracle_hidden_params success=0.850+/-0.079 distance=0.047+/-0.006
+nominal robust_worst_case_mpc success=0.588+/-0.109 distance=0.069+/-0.007
