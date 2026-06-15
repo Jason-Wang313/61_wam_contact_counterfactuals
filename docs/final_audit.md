@@ -11,3 +11,16 @@
 9. Exact Downloads PDF path: `C:/Users/wangz/Downloads/61.pdf`
 10. GitHub URL: https://github.com/Jason-Wang313/61_wam_contact_counterfactuals
 11. Confirmation: no visible Desktop copy was requested or made.
+
+## 2026-06-15 Continuation Audit
+
+Executed `docs/paper61_iclr_submission_execution_plan_20260615.md`.
+
+Additional verification:
+- Python compile passed for `src/run_experiment.py` and `scripts/analyze_mujoco_results.py`.
+- `scripts/analyze_mujoco_results.py` regenerated paired statistics and figures from existing MuJoCo CSV outputs.
+- CSV finite/schema audit passed for main, paired, ablation, seed, and negative-case result files.
+- LaTeX/BibTeX/PDF rebuild completed and `C:/Users/wangz/Downloads/61.pdf` was refreshed.
+- `C:/Users/wangz/Desktop/61.pdf` is absent.
+
+Decision remains `STRONG_REVISE`, not ICLR-main-ready. See `docs/paper61_terminal_audit_20260615.md`.
