@@ -4,7 +4,7 @@ Submission-hardening version: v5 expanded frozen-protocol rebuild.
 
 Terminal decision: STRONG_REVISE for ICLR main conference.
 
-This repository contains a real CPU-only MuJoCo contact-pushing benchmark, branch-counterfactual MPC variants, strong MPC baselines, stress splits, ablations, posterior diagnostics, bootstrap/sign-flip paired statistics, generated LaTeX result tables, and a 25-page ICLR-style manuscript. The result is scientifically useful but not ICLR-main ready: Branch v5 improves low-friction behavior but does not consistently beat ensemble, adaptive-ID, robust worst-case, or robust-mean MPC, and ablations do not isolate the claimed mechanism.
+This repository contains a real CPU-only MuJoCo contact-pushing benchmark, branch-counterfactual MPC variants, strong MPC baselines, stress splits, ablations, posterior diagnostics, bootstrap/sign-flip paired statistics, generated LaTeX result tables, and a 25-page ICLR-style manuscript with VLA-v4-matched green/red boxed clickable links. The result is scientifically useful but not ICLR-main ready: Branch v5 improves low-friction behavior but does not consistently beat ensemble, adaptive-ID, robust worst-case, or robust-mean MPC, and ablations do not isolate the claimed mechanism.
 
 ## Evidence Summary
 
@@ -40,6 +40,6 @@ python scripts\validate_submission_artifacts.py
 
 Canonical local PDF: `C:/Users/wangz/Downloads/61.pdf`
 
-PDF SHA256: `D9E85F35B6ABA1705C47A36944E59E6A195BD5830385869ECACC37ABC5FA4886`
+PDF SHA256: `13E9C60E063E2A6F2C18C61FC07E9E8B274077462D66D73EDABFF297DF6784EB`
 
 GitHub: https://github.com/Jason-Wang313/61_wam_contact_counterfactuals
