@@ -1,6 +1,10 @@
 __pycache__/
 results/*.partial.csv
 results/full_run_*.log
+results/dev_smoke*/
+figures/dev_smoke*/
+results/v4_legacy_*/
+logs/
 *.aux
 *.bbl
 *.blg
