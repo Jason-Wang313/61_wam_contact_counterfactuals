@@ -1,4 +1,5 @@
 case,observed,paper_status
-branch_library_misses_true_friction,posterior locks onto wrong branch,limitation
-large actuation_noise,diagnostic push becomes less informative,limitation
-custom_mujoco_not_public_benchmark,"evidence supports strong-revise, not final ICLR readiness",limitation
+posterior_nonidentifiability,entropy can remain high after the diagnostic action,reported_failure_mode
+low_friction_oracle_gap,branch policies may remain far below hidden-parameter oracle,acceptance_gate
+strong_baseline_tie,"ensemble, adaptive-ID, or robust MPC may match the proposed method",acceptance_gate
+custom_mujoco_not_public_benchmark,evidence is controlled but not hardware or public benchmark validation,limitation
